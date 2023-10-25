@@ -1,0 +1,15 @@
+{
+  "name": "github-actions-security-scanner",
+  "version": "1.0.0",
+  "description": "CLI tool to scan and extract commands from Github Actions Files (yml) files",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":  "node ./app.js"
+  },
+  "author": "Jugal Lad",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
