@@ -36,6 +36,6 @@ The tool can be tested with different action files by adding them in the src/dat
 
 ## Demo
 
-Output screenshot:
+Output screenshot:<br>
 ![Output Screenshot](https://i.ibb.co/ymCfVFv/Screenshot-2023-10-24-175956.png)
 
