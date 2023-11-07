@@ -11,7 +11,7 @@ const { commands } = require("./src/models/Commands");
 const { environments } = require("./src/models/Environments");
 
 //load file
-const filePath = "./Actions.yml";
+//const filePath = "./Actions.yml";
 const actionFile = yaml.load(fs.readFileSync("./src/data/Actions.yml", "utf-8"));
 
 //execute the extract function
