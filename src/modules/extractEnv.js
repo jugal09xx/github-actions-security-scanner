@@ -1,4 +1,4 @@
-const { environments } =  require("../models/Environments");
+import { environments } from "../models/Environments.js";
 
 function extractEnv(data) {
     if(typeof data === 'object') {
@@ -14,4 +14,4 @@ function extractEnv(data) {
     }
 }
 
-module.exports = { extractEnv }
+export { extractEnv }

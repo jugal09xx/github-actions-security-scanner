@@ -1,14 +1,14 @@
 //import dependencies
-const fs = require("fs");
-const yaml = require("js-yaml");
+import fs from "fs";
+import yaml from "js-yaml";
 
 //import modules
-const { extractCommands } = require("./src/modules/extractCommands");
-const { extractEnv } = require("./src/modules/extractEnv");
+import { extractCommands } from "./src/modules/extractCommands.js";
+import { extractEnv } from "./src/modules/extractEnv.js";
 
 //import models
-const { commands } = require("./src/models/Commands");
-const { environments } = require("./src/models/Environments");
+import { commands } from "./src/models/Commands.js";
+import { environments } from "./src/models/Environments.js";
 
 //load file
 //const filePath = "./Actions.yml";

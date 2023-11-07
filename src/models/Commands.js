@@ -2,4 +2,4 @@
 
 const commands = [];
 
-module.exports = {commands};
+export {commands};

@@ -1,4 +1,4 @@
-const { commands } =  require("../models/Commands");
+import { commands } from "../models/Commands.js";
 
 function extractCommands(data) {
     if(typeof data === 'object') {
@@ -14,4 +14,4 @@ function extractCommands(data) {
     }
 }
 
-module.exports = {extractCommands} 
+export {extractCommands} 

@@ -1,5 +1,6 @@
 {
   "name": "github-actions-security-scanner",
+  "type": "module",
   "version": "1.0.0",
   "description": "CLI tool to scan and extract commands from Github Actions Files (yml) files",
   "main": "app.js",
