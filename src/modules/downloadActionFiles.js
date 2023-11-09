@@ -26,23 +26,26 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
     } else {
       console.log(`${workflowFiles.length} workflow file(s) found.`);
       // Download each workflow file
+      var count = 1;
       for (const file of workflowFiles) {
         const fileResponse = await axios.get(file.download_url);
         const filePath = path.join(outputDirectory, file.name);
         fs.writeFileSync(filePath, fileResponse.data);
-        console.log(`Downloaded ${file.name}`);
-        console.log('Workflow files processed successfully.');
+        console.log(`(${count}/${workflowFiles.length}) Downloaded ${file.name} successfully`);
+        count++;
       }
+      console.log('Workflow files processed successfully.');
     }
 
     
   } catch (error) {
-    console.error('Bad link or no workflows directory exists. Error:', error.message);
+    console.error('Bad link or .github/workflows does not exist. Error:', error.message);
   }
 };
 
-// Usage example
-const githubLink = 'https://github.com/Roshan-Ravindran/Cafeteria-WebApp';
-const outputDirectory = '../workflows';
+export {downloadWorkflowsFromRepo}
 
-downloadWorkflowsFromRepo(githubLink, outputDirectory);
+
+
+
+
