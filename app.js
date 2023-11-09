@@ -8,8 +8,8 @@ import { extractEnv } from "./src/modules/extractEnv.js";
 import { checkKeysPresence } from "./src/modules/extractKeys.js";
 
 // //import models
-// import { commands } from "./src/models/Commands.js";
-// import { environments } from "./src/models/Environments.js";
+import { commands } from "./src/models/Commands.js";
+import { environments } from "./src/models/Environments.js";
 
 //load file
 //const filePath = "./Actions.yml";
@@ -34,8 +34,10 @@ if (missingKeys.length > 0) {
       missingKeys.length +
       "/5 Keys Matched: The file appears to be a valid Github Actions workflow."
   );
-  extractEnv(actionFile)
+  extractEnv(actionFile);
+  console.log('Host system is running: ' + environments);
   extractCommands(actionFile);
+  console.log(`Found ${commands.length} commands/scripts`);
 }
 
 // //print output -> ./utils/printResults.js
