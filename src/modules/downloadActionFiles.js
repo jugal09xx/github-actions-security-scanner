@@ -1,6 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 
 const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
   try {
@@ -23,6 +24,7 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
 
     if (workflowFiles.length === 0) {
       console.log('No workflow files found.');
+      console.log();
     } else {
       console.log(`${workflowFiles.length} workflow file(s) found.`);
       // Download each workflow file
@@ -31,10 +33,11 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
         const fileResponse = await axios.get(file.download_url);
         const filePath = path.join(outputDirectory, file.name);
         fs.writeFileSync(filePath, fileResponse.data);
-        console.log(`(${count}/${workflowFiles.length}) Downloaded ${file.name} successfully`);
+        console.log(`(${count}/${workflowFiles.length}) Downloaded ` +chalk.yellow(file.name)+` successfully`);
         count++;
       }
       console.log('Workflow files processed successfully.');
+      console.log();
     }
 
     
