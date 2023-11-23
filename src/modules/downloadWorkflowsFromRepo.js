@@ -32,7 +32,9 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
       console.log("No workflow files found.");
       console.log();
     } else {
-      console.log(`${workflowFiles.length} workflow file(s) found.`);
+      console.log();
+      console.log(chalk.yellow(`${workflowFiles.length} workflow file(s) found.`));
+      console.log();
       // Download each workflow file
       var count = 1;
       for (const file of workflowFiles) {

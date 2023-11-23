@@ -1,5 +1,5 @@
 import xlsx from "xlsx";
-import columnify from "columnify";
+//import columnify from "columnify";
 import chalk from "chalk";
 
 const filePath = "./src/db/database1.xlsx";

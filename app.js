@@ -72,7 +72,7 @@ input.question("Enter the Github repository link:  ", async (githubLink) => {
 
         const missingKeys = checkKeysPresence(actionFile);
         // console.log(missingKeys.length)
-        if (missingKeys.length > 0) {
+        if (missingKeys.length === 5) {
           console.log();
           console.log(
             `${chalk.yellow(file)}: ` +
