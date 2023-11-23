@@ -42,7 +42,7 @@ function evaluateWorkflowCommands(extractedCommands, file) {
   for (let i = 0; i < extractedCommands.length; i++) {
     let matchingKey = null;
     for (const key in dictionary) {
-      if (extractedCommands[i].includes(key)) {
+      if (typeof extractedCommands[i] === "string" && extractedCommands[i].includes(key)) {
         matchingKey = key;
         break;
       }

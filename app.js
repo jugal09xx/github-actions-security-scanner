@@ -11,11 +11,12 @@ import { extractEnv } from "./src/modules/extractEnv.js";
 import { checkKeysPresence } from "./src/modules/extractKeys.js";
 import { downloadWorkflowsFromRepo } from "./src/modules/downloadWorkflowsFromRepo.js";
 import { evaluateWorkflowCommands } from "./src/modules/evaluateWorkflowCommands.js";
-// import { cleanupWorkflows } from "./src/modules/cleanupWorkflows.js";
+import { cleanupWorkflows } from "./src/modules/cleanupWorkflows.js";
 
 // //import models
 import { commands } from "./src/models/Commands.js";
 import { environments } from "./src/models/Environments.js";
+import { workerData } from "worker_threads";
 
 //action file src
 const directoryPath = "./src/workflows/";
@@ -106,5 +107,6 @@ input.question("Enter the Github repository link:  ", async (githubLink) => {
         console.log(`${file}: Error processing ${file}: ` + error);
       }
     });
+    cleanupWorkflows("src/workflows");
   });
 });
