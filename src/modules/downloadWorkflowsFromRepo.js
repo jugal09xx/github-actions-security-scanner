@@ -1,7 +1,7 @@
-import axios from 'axios';
-import fs from 'fs';
-import path from 'path';
-import chalk from 'chalk';
+import axios from "axios";
+import fs from "fs";
+import path from "path";
+import chalk from "chalk";
 
 const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
   try {
@@ -10,20 +10,26 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
     const matches = githubLink.match(regex);
 
     if (!matches) {
-      throw new Error('Invalid GitHub link format.');
+      throw new Error("Invalid GitHub link format.");
     }
 
     const owner = matches[1];
     const repo = matches[2];
 
     // Make API request to retrieve repository contents
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contents/.github/workflows`);
+    const response = await axios.get(
+      `https://api.github.com/repos/${owner}/${repo}/contents/.github/workflows`
+    );
 
     // Filter for workflow files
-    const workflowFiles = response.data.filter(item => item.type === 'file' && item.name.endsWith('.yml'));
+    const workflowFiles = response.data.filter(
+      (item) =>
+        item.type === "file" &&
+        (item.name.endsWith(".yml") || item.name.endsWith("yaml"))
+    );
 
     if (workflowFiles.length === 0) {
-      console.log('No workflow files found.');
+      console.log("No workflow files found.");
       console.log();
     } else {
       console.log(`${workflowFiles.length} workflow file(s) found.`);
@@ -33,22 +39,22 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
         const fileResponse = await axios.get(file.download_url);
         const filePath = path.join(outputDirectory, file.name);
         fs.writeFileSync(filePath, fileResponse.data);
-        console.log(`(${count}/${workflowFiles.length}) Downloaded ` +chalk.yellow(file.name)+` successfully`);
+        console.log(
+          `(${count}/${workflowFiles.length}) Downloaded ` +
+            chalk.yellow(file.name) +
+            ` successfully`
+        );
         count++;
       }
-      console.log('Workflow files processed successfully.');
+      console.log("Workflow files processed successfully.");
       console.log();
     }
-
-    
   } catch (error) {
-    console.error('Bad link or .github/workflows does not exist. Error:', error.message);
+    console.error(
+      "Bad link or .github/workflows does not exist. Error:",
+      error.message
+    );
   }
 };
 
-export {downloadWorkflowsFromRepo}
-
-
-
-
-
+export { downloadWorkflowsFromRepo };
