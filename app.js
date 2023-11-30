@@ -8,6 +8,7 @@ import chalk from "chalk";
 //import modules
 import { extractCommands } from "./src/modules/extractCommands.js";
 import { extractEnv } from "./src/modules/extractEnv.js";
+import { extractUses } from "./src/modules/extractUses.js";
 import { checkKeysPresence } from "./src/modules/extractKeys.js";
 import { downloadWorkflowsFromRepo } from "./src/modules/downloadWorkflowsFromRepo.js";
 import { evaluateWorkflowCommands } from "./src/modules/evaluateWorkflowCommands.js";
@@ -16,6 +17,7 @@ import { evaluateWorkflowCommands } from "./src/modules/evaluateWorkflowCommands
 // //import models
 import { commands } from "./src/models/Commands.js";
 import { environments } from "./src/models/Environments.js";
+import { uses } from "./src/models/Uses.js";
 
 //action file src
 const directoryPath = "./src/workflows/";
@@ -52,6 +54,8 @@ const input = readline.createInterface({
 
 input.question("Enter the Github repository link:  ", async (githubLink) => {
   const outputDirectory = "./src/workflows";
+  console.log();
+  console.log(chalk.italic("Downloading action files from: " + githubLink));
   await downloadWorkflowsFromRepo(githubLink, outputDirectory);
   input.close();
 
@@ -96,11 +100,14 @@ input.question("Enter the Github repository link:  ", async (githubLink) => {
               commands.length
             )} commands/scripts`
           );
+          extractUses(actionFile);
+          console.log();
+          console.log(chalk.yellow("Linked file(s): "+uses.length+"\n"+uses));
+          console.log();
           //console.log(commands);
           evaluateWorkflowCommands(commands, file);
 
           //delete all files in /src/workflow after evaluation
-
         }
       } catch (error) {
         console.log(`${file}: Error processing ${file}: ` + error);
