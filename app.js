@@ -17,7 +17,7 @@ import { cleanupWorkflows } from "./src/modules/cleanupWorkflows.js";
 // //import models
 import { commands } from "./src/models/Commands.js";
 import { environments } from "./src/models/Environments.js";
-import { workerData } from "worker_threads";
+//import { workerData } from "worker_threads";
 import { uses } from "./src/models/Uses.js";
 
 
@@ -54,12 +54,40 @@ const input = readline.createInterface({
   output: process.stdout,
 });
 
-input.question("Enter the Github repository link:  ", async (githubLink) => {
+
+const promptForGitHubLink = async () => {
+  return new Promise((resolve) => {
+    input.question("Enter the Github repository link:  ", (githubLink) => {
+      resolve(githubLink);
+    });
+  });
+};
+
+// Define an asynchronous function to handle the entire process
+const main = async () => {
+  let validLink = false;
+  let githubLink = "";
   const outputDirectory = "./src/workflows";
-  console.log();
-  console.log(chalk.italic("Downloading action files from: " + githubLink));
+  
+  //while function to loop until valid github link is received
+  while (!validLink) {
+    githubLink = await promptForGitHubLink();
+
+    const regex = /github.com\/([^/]+)\/([^/]+)/;
+    const matches = githubLink.match(regex);
+
+    if (!matches) {
+      console.log("Invalid GitHub link format.");
+      validLink=false;
+    }
+    else{
+      validLink=true;
+    }
+    console.log();
+  }
+  
   await downloadWorkflowsFromRepo(githubLink, outputDirectory);
-  input.close();
+    input.close();
 
   fs.readdir(directoryPath, (err, files) => {
     if (err) {
@@ -117,4 +145,7 @@ input.question("Enter the Github repository link:  ", async (githubLink) => {
     });
     cleanupWorkflows("src/workflows");
   });
-});
+};
+
+
+main();
