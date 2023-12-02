@@ -8,14 +8,10 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
     // Extract owner and repo name from the GitHub link
     const regex = /github.com\/([^/]+)\/([^/]+)/;
     const matches = githubLink.match(regex);
-
-    if (!matches) {
-      throw new Error("Invalid GitHub link format.");
-    }
-
+  
     const owner = matches[1];
     const repo = matches[2];
-
+    console.log(chalk.italic("Downloading action files from: " + githubLink));
     // Make API request to retrieve repository contents
     const response = await axios.get(
       `https://api.github.com/repos/${owner}/${repo}/contents/.github/workflows`
@@ -50,12 +46,14 @@ const downloadWorkflowsFromRepo = async (githubLink, outputDirectory) => {
       }
       console.log("Workflow files processed successfully.");
       console.log();
+      return true;
     }
   } catch (error) {
     console.error(
-      "Bad link or .github/workflows does not exist. Error:",
+      "Error : .github/workflows does not exist. ",
       error.message
     );
+    return false;
   }
 };
 
