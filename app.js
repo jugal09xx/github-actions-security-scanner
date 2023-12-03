@@ -72,12 +72,10 @@ const main = async () => {
   //while function to loop until valid github link is received
   while (!validLink) {
     githubLink = await promptForGitHubLink();
+    validLink = await downloadWorkflowsFromRepo(githubLink, outputDirectory);
 
-    const regex = /github.com\/([^/]+)\/([^/]+)/;
-    const matches = githubLink.match(regex);
-
-    if (!matches) {
-      console.log("Invalid GitHub link format.");
+    if (!validLink) {
+      console.log("Invalid GitHub link format or workflow doesn't exist");
       validLink=false;
     }
     else{
@@ -85,9 +83,7 @@ const main = async () => {
     }
     console.log();
   }
-  
-  await downloadWorkflowsFromRepo(githubLink, outputDirectory);
-    input.close();
+  input.close();
 
   fs.readdir(directoryPath, (err, files) => {
     if (err) {
