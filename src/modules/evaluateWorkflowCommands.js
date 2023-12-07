@@ -1,6 +1,7 @@
 import xlsx from "xlsx";
 //import columnify from "columnify";
 import chalk from "chalk";
+import Table from "cli-table";
 
 const filePath = "./src/db/database1.xlsx";
 const sheetName = "Sheet1";
@@ -42,16 +43,19 @@ function evaluateWorkflowCommands(extractedCommands, file) {
   for (let i = 0; i < extractedCommands.length; i++) {
     let matchingKey = null;
     for (const key in dictionary) {
-      if (typeof extractedCommands[i] === "string" && extractedCommands[i].includes(key)) {
+      if (
+        typeof extractedCommands[i] === "string" &&
+        extractedCommands[i].includes(key)
+      ) {
         matchingKey = key;
         break;
       }
     }
     if (matchingKey != null) {
       // const tableData = [];
-      const result = {};
+      let result = {};
 
-      result["ID."] = i + 1;
+      result["ID"] = i + 1;
       result["COMMAND"] = extractedCommands[i];
       result["SCORE"] = dictionary[matchingKey];
 
@@ -70,17 +74,30 @@ function evaluateWorkflowCommands(extractedCommands, file) {
         return true;
       }
 
+      //table config
+
+      // var table = new Table({
+      //   head: ["No.", "Command", "Score"],
+      //   colWidths: [5, 50, 7],
+      // });
+
+      // //table is an Array, so you can `push`, `unshift`, `splice` and friends
+      // table.push([result.ID, result.COMMAND, result.SCORE]);
+
+      // console.log(table.toString());
+      // result = {}
+
       console.log(result);
-      console.log();
+      //console.log();
 
       const dict = {};
       dict[extractedCommands[i]] = dictionary[matchingKey];
       finalmalarray.push(dict);
-
+      
       // cleanupWorkflows(directoryPath);
-    }
+    } 
   }
-  if(finalmalarray.length === 0){
+  if (finalmalarray.length === 0) {
     console.log("All good here, no malicious content found.");
   }
   //console.log("\n\n", finalmalarray);
