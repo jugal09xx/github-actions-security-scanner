@@ -16,6 +16,7 @@ import { cleanupWorkflows } from "./src/modules/cleanupWorkflows.js";
 
 // //import models
 import { commands } from "./src/models/Commands.js";
+// import { commands } from "./src/modules/extractCommands.js";//new command array
 import { environments } from "./src/models/Environments.js";
 //import { workerData } from "worker_threads";
 import { uses } from "./src/models/Uses.js";
@@ -120,6 +121,8 @@ const main = async () => {
             `${chalk.yellow(file)}: Host system is running: ` +
               chalk.yellow(environments)
           );
+          commands.splice(0, commands.length);
+          // console.log(commands)
           extractCommands(actionFile);
           console.log(
             `${chalk.yellow(file)}: Found ${chalk.yellow(

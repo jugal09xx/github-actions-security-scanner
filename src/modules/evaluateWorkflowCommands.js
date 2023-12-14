@@ -2,6 +2,7 @@ import xlsx from "xlsx";
 //import columnify from "columnify";
 import chalk from "chalk";
 import Table from "cli-table";
+import fs from "fs";
 
 const filePath = "./src/db/database1.xlsx";
 const sheetName = "Sheet1";
@@ -40,6 +41,15 @@ function evaluateWorkflowCommands(extractedCommands, file) {
   // }
 
   const finalmalarray = [];
+  let result = {};
+
+  //table config
+
+  var table = new Table({
+    head: ["No.", "Command", "Score"],
+    colWidths: [5, 70, 20],
+  });
+
   for (let i = 0; i < extractedCommands.length; i++) {
     let matchingKey = null;
     for (const key in dictionary) {
@@ -53,11 +63,19 @@ function evaluateWorkflowCommands(extractedCommands, file) {
     }
     if (matchingKey != null) {
       // const tableData = [];
-      let result = {};
+      result = {
+        NAME: file,
+        DATE: new Date().toUTCString(),
+        ID: i + 1,
+        COMMAND: extractedCommands[i],
+        SCORE: dictionary[matchingKey],
+      };
 
-      result["ID"] = i + 1;
-      result["COMMAND"] = extractedCommands[i];
-      result["SCORE"] = dictionary[matchingKey];
+      finalmalarray.push(result);
+
+      // result["ID"] = i + 1;
+      // result["COMMAND"] = extractedCommands[i];
+      // result["SCORE"] = dictionary[matchingKey];
 
       // tableData.push({
       //   "No.": i + 1,
@@ -74,34 +92,45 @@ function evaluateWorkflowCommands(extractedCommands, file) {
         return true;
       }
 
-      //table config
+      //table is an Array, so you can `push`, `unshift`, `splice` and friends
+      table.push([result.ID, result.COMMAND, result.SCORE]);
 
-      // var table = new Table({
-      //   head: ["No.", "Command", "Score"],
-      //   colWidths: [5, 50, 7],
-      // });
-
-      // //table is an Array, so you can `push`, `unshift`, `splice` and friends
-      // table.push([result.ID, result.COMMAND, result.SCORE]);
-
-      // console.log(table.toString());
       // result = {}
 
-      console.log(result);
+      // console.log(result);
       //console.log();
 
-      const dict = {};
-      dict[extractedCommands[i]] = dictionary[matchingKey];
-      finalmalarray.push(dict);
-      
+      // const dict = {};
+      // dict[extractedCommands[i]] = dictionary[matchingKey];
+      // finalmalarray.push(dict);
+
       // cleanupWorkflows(directoryPath);
-    } 
+    }
   }
+  const resultToJSON = JSON.stringify(result, null, 2);
+  console.log(resultToJSON)
+
+  fs.writeFile(
+    `../github-actions-security-scanner/src/scans/${file}.txt`,
+    resultToJSON,
+    "utf8",
+    (err) => {
+      if (err) {
+        console.error("Error writing file:", err);
+      } else {
+        console.log(`Report ${file}.txt has been saved.`);
+      }
+    }
+  );
+  console.log();
+  console.log(table.toString());
+  console.log();
+
   if (finalmalarray.length === 0) {
     console.log("All good here, no malicious content found.");
   }
-  //console.log("\n\n", finalmalarray);
-  //return finalmalarray;
+  // console.log("\n\n", finalmalarray);
+  // return finalmalarray;
 }
 
 export { evaluateWorkflowCommands };
